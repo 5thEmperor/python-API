@@ -21,10 +21,10 @@ class VerifyOtpSerializer(serializers.Serializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model=Useraccount
-        fields=['password','email'] 
+        fields=['password','email']
 
 class UserInterestSerializer(serializers.ModelSerializer):
     class Meta:
         model=Interest
-        fields=['interest']        
+        fields=['id','interest']        
              

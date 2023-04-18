@@ -30,7 +30,7 @@ class Useraccount(AbstractBaseUser,PermissionsMixin):
         user_interest = models.ForeignKey(Interest,on_delete=models.CASCADE,null=True,blank=True)
 
         objects = CustomUserManager()
-    
+     
         USERNAME_FIELD = 'email'
     
         def __str__(self):

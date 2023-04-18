@@ -60,6 +60,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,11 +77,11 @@ REST_FRAMEWORK = {
     }
 
 ROOT_URLCONF = 'Blogspot.urls'
-
+TEMPLATES_DIR= Path(BASE_DIR,'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -156,5 +157,5 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_USE_TLS=True
 EMAIL_PORT=587
 EMAIL_HOST_USER='uzmamansoori220@gmail.com'
-EMAIL_HOST_PASSWORD='swadyzdztrevztss'
+EMAIL_HOST_PASSWORD='ymsmnfbczlhjuaul'
 

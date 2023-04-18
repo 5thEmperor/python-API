@@ -9,7 +9,6 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
-
     def __str__(self):
         return self.name
 
@@ -23,6 +22,11 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
     is_public = models.BooleanField(default=False)
+    status=models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
+
+# class Like(models.Model):
+#     user_id= models.ForeignKey(Useraccount,on_delete=models.CASCADE)
+#     blog_id= models.ForeignKey(Blog,on_delete=models.CASCADE)

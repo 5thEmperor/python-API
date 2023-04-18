@@ -3,20 +3,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Blog, Category, Tag
-from .serializers import BlogSerializer, CategorySerializer, TagSerializer
+from .serializers import *
+import uuid
+from .service import *
 
 class BlogList(APIView):
+    def post(self, request):
+        user= request.user.id
+        data= request.data
+        print("this is data -----------",data)
+        # print("this is user token -----------",user)
+        
+        serializer = BlogSerializer(data=request.data)
+        data['author']= user
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
     def get(self, request):
         blogs = Blog.objects.all()
         serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
+        data = getprofile(serializer.data)
+        return Response(data)
 
-    def post(self, request):
-        serializer = BlogSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogDetail(APIView):
     def get_object(self, pk):
@@ -68,3 +79,5 @@ class TagList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
