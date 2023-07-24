@@ -9,11 +9,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
         read_only_fields = ['id']
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'name'] 
-        read_only_fields = ['id']
 
 
 class BlogSerializer(serializers.ModelSerializer):
@@ -21,7 +16,12 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields= "__all__"
-        
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('like_id', 'post', 'user', 'created_at')
 # class BlogGetSerializer(serializers.ModelSerializer):
 #     categoryname= CategorySerializer(many=True, read_only= True)
 #     tagname=TagSerializer(many=True, read_only= True)

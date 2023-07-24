@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import RegisterSerializer,SendotpSerializer,VerifyOtpSerializer,UserInterestSerializer
-from .models import Useraccount,Interest
+from .serializers import RegisterSerializer,SendotpSerializer,VerifyOtpSerializer
+from .models import Useraccount
 from .service import *
 from .email import *
 from rest_framework import status
@@ -13,13 +13,13 @@ from rest_framework.permissions import IsAuthenticated
 
 class RegisterAPI(APIView):
     # def get(self,request):
-    #     user = Useraccount.objects.all()
+    #     user = Useraccount.objects.all() 
     #     serializer = RegisterSerializer(user, many=True)      
     #     return Response(serializer.data)
 
     def post(self,request):
         body = request.data
-        flag= user_exist(body['email'])
+        flag= user_exist(body['email']) 
         if flag == True:
             return Response({"status":400,"message":"User already exist"})
         else:
@@ -27,7 +27,7 @@ class RegisterAPI(APIView):
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
                 return Response({"status":200,"message":"Data saved succesfully"})
-            else: 
+            else:
                 return Response({"status":400,"message":"Data Invalid"})
 
 class SendOtpAPI(APIView):
@@ -40,7 +40,7 @@ class SendOtpAPI(APIView):
                 send_otp(serializer.data['email'])
                 return Response({'status': 200,
                                     'message': 'registration successfully Done, check email',
-                                    'data': serializer.data})    
+                                    'data': serializer.data})                                         
         
             except Exception as e:
                return Response({'status': 400,
@@ -52,7 +52,6 @@ class VerifyOtpAPI(APIView):
         try:
             data=request.data
             serializer=VerifyOtpSerializer(data=data)
-            
             if serializer.is_valid():
                     email=serializer.data['email']
                     otp=serializer.data['otp']
@@ -104,38 +103,3 @@ class LoginAPI(APIView):
         else:
             return Response({"status":400,"message":"Invalid credentials"})
 
-class UserinterestAPI(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes=[IsAuthenticated]
-    def get(self, request):
-        interest = Interest.objects.all()
-        serializer = UserInterestSerializer(interest, many=True)      
-        return Response(serializer.data)
-
-    def post(self, request):
-        selected_interests = request.data.get('interests')
-        print(selected_interests)
-        if not selected_interests:
-            return Response({"message": "No interests selected."},
-                             status=status.HTTP_400_BAD_REQUEST)
-        
-        if len(selected_interests) < 2 or len(selected_interests) > 3:
-            return Response({"message": "Please select 2-3 interests."},
-                             status=status.HTTP_400_BAD_REQUEST)
-        user_interests=[]
-        for interest_id in selected_interests:
-            try:
-                interest = Interest.objects.get(id=interest_id)
-                print(interest)
-                user_interests.append(Useraccount(email=request.user.email,user_interest=interest))
-            except Interest.DoesNotExist:
-                pass
-        Useraccount.objects.bulk_create(user_interests,batch_size=None,ignore_conflicts=False)
-        # user=Useraccount.objects.get('interest')
-        # user= user_interests
-        # user.save() 
-        return Response({"message": "Interests saved successfully."}, status=status.HTTP_201_CREATED)
-
-
-
-       

@@ -12,7 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class SendotpSerializer(serializers.ModelSerializer):
     class Meta:
         model=Useraccount
-        fields=['email','is_verified'] 
+        fields=['email','is_verified']
 
 class VerifyOtpSerializer(serializers.Serializer):
     email=serializers.EmailField()      
@@ -23,8 +23,5 @@ class LoginSerializer(serializers.ModelSerializer):
         model=Useraccount
         fields=['password','email']
 
-class UserInterestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Interest
         fields=['id','interest']        
              

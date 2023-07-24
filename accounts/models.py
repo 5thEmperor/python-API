@@ -27,7 +27,7 @@ class Useraccount(AbstractBaseUser,PermissionsMixin):
         is_verified=models.BooleanField(null=True,blank=True)
         created_at=models.DateTimeField(null=True,blank=True)
         is_staff=models.BooleanField(default=True,null=True,blank=True)
-        user_interest = models.ForeignKey(Interest,on_delete=models.CASCADE,null=True,blank=True)
+       
 
         objects = CustomUserManager()
      
